@@ -221,6 +221,8 @@ registry.registerMany([
     // Live-retitled to the loaded session by syncWorkspaceTitle below.
     title: NEW_SESSION_TITLE,
     data: {
+      // Until then it is a fresh draft: same localized label syncWorkspaceTitle uses.
+      tabTitle: () => <SessionDraftTitle scope={null} />,
       placement: 'main',
       minWidth: '22vw',
       tabDrag: workspaceTabDrag,

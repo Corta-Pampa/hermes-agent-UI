@@ -1,3 +1,5 @@
+import { brandCatalog } from '@/brand/copy'
+
 import { ar } from './ar'
 import { de } from './de'
 import { en } from './en'
@@ -9,7 +11,8 @@ import type { Locale, Translations } from './types'
 import { zh } from './zh'
 import { zhHant } from './zh-hant'
 
-export const TRANSLATIONS: Record<Locale, Translations> = {
+// Corta: product name and vocabulary are layered over every locale (src/brand/copy.ts).
+export const TRANSLATIONS: Record<Locale, Translations> = brandCatalog({
   en,
   zh,
   'zh-hant': zhHant,
@@ -19,4 +22,4 @@ export const TRANSLATIONS: Record<Locale, Translations> = {
   fr,
   de,
   es
-}
+})

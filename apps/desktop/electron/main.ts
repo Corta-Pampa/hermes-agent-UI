@@ -107,6 +107,7 @@ import {
 import { decideBootstrapRepair } from './bootstrap-repair-guard'
 import { runBootstrap } from './bootstrap-runner'
 import { bootstrapSnapshot } from './bootstrap-state'
+import { PRODUCT_COPYRIGHT, PRODUCT_DISPLAY_NAME } from './brand'
 import {
   BROWSER_WINDOW_HEIGHT,
   BROWSER_WINDOW_MIN_HEIGHT,
@@ -1516,9 +1517,9 @@ if (IS_WINDOWS) {
 // an empty applicationVersion falls back to the bundle version, which is the
 // 0.0.0 placeholder on local builds (#124581).
 app.setAboutPanelOptions({
-  applicationName: APP_NAME,
+  applicationName: PRODUCT_DISPLAY_NAME,
   applicationVersion: nativeAboutVersion(appVersionInfo(INSTALL_STAMP, '', app.getVersion())),
-  copyright: 'Copyright © 2026 Nous Research'
+  copyright: PRODUCT_COPYRIGHT
 })
 
 // Custom scheme for streaming audio/video into the renderer. Local paths read
@@ -2700,7 +2701,7 @@ async function waitForUpdateToFinish() {
       rememberLog(`[updates] detached update finished with manual action (branch ${result.branch}): ${result.message}`)
       dialog.showMessageBox({
         type: 'warning',
-        title: 'Hermes update',
+        title: `${PRODUCT_DISPLAY_NAME} update`,
         message: 'The update finished, but needs one more step',
         detail: result.message
       })
@@ -2716,8 +2717,8 @@ async function waitForUpdateToFinish() {
       void dialog
         .showMessageBox({
           type: 'error',
-          title: 'Hermes update',
-          message: "Hermes couldn't finish updating",
+          title: `${PRODUCT_DISPLAY_NAME} update`,
+          message: `${PRODUCT_DISPLAY_NAME} couldn't finish updating`,
           detail:
             "You're still on the previous version and can keep using it. Try the update again, or open the update log to report the problem.\n\n" +
             `Details: ${result.message}`,
@@ -13613,7 +13614,7 @@ function spawnSecondaryWindow({
     height: SESSION_WINDOW_MIN_HEIGHT,
     minWidth: SESSION_WINDOW_MIN_WIDTH,
     minHeight: SESSION_WINDOW_MIN_HEIGHT,
-    title: 'Hermes',
+    title: PRODUCT_DISPLAY_NAME,
     titleBarStyle: 'hidden',
     titleBarOverlay: getTitleBarOverlayOptions(),
     trafficLightPosition: IS_MAC ? WINDOW_BUTTON_POSITION : undefined,
@@ -13716,7 +13717,7 @@ function spawnBrowserWindow(tabId) {
     height: BROWSER_WINDOW_HEIGHT,
     minWidth: BROWSER_WINDOW_MIN_WIDTH,
     minHeight: BROWSER_WINDOW_MIN_HEIGHT,
-    title: 'Hermes',
+    title: PRODUCT_DISPLAY_NAME,
     titleBarStyle: 'hidden',
     titleBarOverlay: getTitleBarOverlayOptions(),
     trafficLightPosition: IS_MAC ? WINDOW_BUTTON_POSITION : undefined,
@@ -13818,7 +13819,7 @@ function createInstanceWindow(
     ...nextInstanceBounds(source),
     minWidth: WINDOW_MIN_WIDTH,
     minHeight: WINDOW_MIN_HEIGHT,
-    title: 'Hermes',
+    title: PRODUCT_DISPLAY_NAME,
     titleBarStyle: 'hidden',
     titleBarOverlay: getTitleBarOverlayOptions(),
     trafficLightPosition: IS_MAC ? WINDOW_BUTTON_POSITION : undefined,
@@ -14886,7 +14887,7 @@ function createWindow() {
     ...computeWindowOptions(savedWindowState, screen.getAllDisplays()),
     minWidth: WINDOW_MIN_WIDTH,
     minHeight: WINDOW_MIN_HEIGHT,
-    title: 'Hermes',
+    title: PRODUCT_DISPLAY_NAME,
     // Frameless title bar on every platform so the renderer can paint the
     // "hide sidebar" button (and other left-side titlebar tools) flush with
     // the top edge — matching the macOS layout where the traffic lights sit
@@ -15163,7 +15164,7 @@ function createWindow() {
         const exit = details?.exitCode === undefined ? '' : `, exit code ${String(details.exitCode)}`
         rememberLog(`[renderer:main] renderer terminated while live (reason=${reason}${exit}); surfacing recovery page`)
         void loadRendererLoadErrorPage(mainWindow, {
-          title: 'Hermes desktop UI was terminated',
+          title: `${PRODUCT_DISPLAY_NAME} desktop UI was terminated`,
           errorDescription:
             `The desktop UI process was terminated unexpectedly (reason: ${reason}${exit}). ` +
             'Your sessions and the background gateway are unaffected — reload to continue.',
@@ -18232,9 +18233,9 @@ function showAboutPanelFresh(): void {
     // through empty/placeholder: the panel would render the bundle's 0.0.0 (#124581).
     const display: string = nativeAboutVersion(info)
     app.setAboutPanelOptions({
-      applicationName: APP_NAME,
+      applicationName: PRODUCT_DISPLAY_NAME,
       applicationVersion: skew.outOfSync ? `${display} — app build out of date, update the desktop app` : display,
-      copyright: 'Copyright © 2026 Nous Research'
+      copyright: PRODUCT_COPYRIGHT
     })
     app.showAboutPanel()
   })

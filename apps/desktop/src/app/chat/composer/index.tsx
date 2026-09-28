@@ -1153,7 +1153,8 @@ export function ChatBar({
       disabled={disabled}
       foldVoice={foldVoice}
       hasComposerPayload={hasComposerPayload}
-      hideModelPill={guidedChat}
+      // Model and reasoning are administration: Simple mode leaves them to Settings.
+      hideModelPill={guidedChat || !showsAdvancedChrome}
       minimal={minimal}
       onDictate={dictate}
       onQueue={queueDraft}

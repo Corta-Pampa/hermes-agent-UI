@@ -1,4 +1,4 @@
-import { NEW_SESSION_TITLE } from '@/lib/chat-runtime'
+import { useI18n } from '@/i18n'
 import { useStoreSelector } from '@/lib/use-session-slice'
 import { $draftTitles, draftTitleIn } from '@/store/composer'
 
@@ -17,9 +17,11 @@ export interface SessionDraftTitleProps {
  * re-render the whole panes area, so the label subscribes for itself and its
  * own key only.
  *
- * Falls back to the placeholder rather than going blank, so an emptied composer
- * reads the same as one never typed into.
+ * Falls back to the localized placeholder rather than going blank, so an
+ * emptied composer reads the same as one never typed into.
  */
 export function SessionDraftTitle({ scope }: SessionDraftTitleProps) {
-  return useStoreSelector($draftTitles, titles => draftTitleIn(titles, scope)) || NEW_SESSION_TITLE
+  const { t } = useI18n()
+
+  return useStoreSelector($draftTitles, titles => draftTitleIn(titles, scope)) || t.sidebar.nav['new-session']
 }
