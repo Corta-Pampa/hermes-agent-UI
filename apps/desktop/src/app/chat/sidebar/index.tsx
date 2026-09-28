@@ -207,7 +207,7 @@ const SIDEBAR_NAV: SidebarNavItem[] = [
   {
     id: 'new-session',
     label: '',
-    icon: props => <Codicon name="robot" {...props} />,
+    icon: props => <Codicon name="edit" {...props} />,
     action: 'new-session',
     keybindActionId: 'session.new'
   },

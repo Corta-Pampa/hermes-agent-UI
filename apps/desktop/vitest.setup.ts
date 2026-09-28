@@ -1,5 +1,8 @@
 import { configure } from '@testing-library/react'
+import { vi } from 'vitest'
 
+import type * as BrandModule from './src/brand'
+import type * as CopyModule from './src/brand/copy'
 import { InertResizeObserver } from './src/test/jsdom'
 
 // Shared tooltips measure their arrow through Radix's useSize hook; Masonry measures lanes.
@@ -78,3 +81,18 @@ if ('Element' in globalThis) {
 // as the 15s testTimeout above it while still finishing below it, so a
 // genuinely hung await still surfaces as this assertion, not a test timeout.
 configure({ asyncUtilTimeout: 12_000 })
+
+// Corta (src/brand) is a layer over upstream Hermes. The upstream suite keeps
+// running against upstream defaults — Hermes copy, Advanced interface mode —
+// so upstream tests merge unchanged; src/brand/*.test.ts load the real overlay
+// (vi.importActual) and pin the Corta behaviour. See docs/CORTA_DESKTOP_BRANDING.md.
+vi.mock('@/brand', async importOriginal => {
+  const actual = await importOriginal<typeof BrandModule>()
+
+  return { BRAND: { ...actual.BRAND, defaultInterfaceMode: 'advanced' } }
+})
+
+vi.mock('@/brand/copy', async importOriginal => ({
+  ...(await importOriginal<typeof CopyModule>()),
+  brandCatalog: <T>(catalog: T): T => catalog
+}))

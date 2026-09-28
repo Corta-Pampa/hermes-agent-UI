@@ -499,6 +499,9 @@
        only ever applied to the windows that don't mount the backdrop. Pinned
        to the value the app actually renders at. */
     --radius-scalar: 0.2;
+    /* Button/Input/Select chrome (components/ui/button.tsx, control.ts). */
+    --control-radius: 2.5px;
+    --control-icon-radius: 4px;
 
     /* Space under last message vs overlay composer — driven by the measured composer DOCK height (see
        composer/index.tsx), which covers the micro-action strip, the status stack, the composer, and the
@@ -573,6 +576,12 @@
     --sidebar-ring: var(--dt-ring);
     --sidebar-edge-border: color-mix(in srgb, var(--ui-base) 7.5%, transparent);
     --chrome-action-hover: var(--ui-control-hover-background);
+    /* Pane tab labels (components/ui/pane-tab.tsx). */
+    --pane-tab-font-size: 9px;
+    --pane-tab-tracking: 0.025em;
+    --pane-tab-case: uppercase;
+    /* Sidebar/overlay section labels (shell/sidebar-label.tsx). */
+    --ui-section-label: var(--theme-primary);
 
     --midground: var(--dt-midground);
     --background: var(--dt-background);

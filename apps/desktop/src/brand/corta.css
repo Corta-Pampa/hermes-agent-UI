@@ -1,0 +1,120 @@
+/* Corta skin — structural tokens and fonts.
+ *
+ * Colours that the theme engine paints inline (seeds, --dt-*) come from
+ * ./corta-theme.ts. This file maps the rest of corta.fr's design tokens onto
+ * the app's derived --ui-* tokens, scoped to the `corta` skin so any other
+ * skin still renders exactly as upstream ships it. Values are the site's:
+ * surfaces (--bg, --surface…), ink-alpha lines and fills, 7–12px radii,
+ * -0.011em tracking. Nothing here targets a component. */
+
+/* Stack Sans (SIL OFL 1.1, see ./fonts/OFL.txt) — bundled so the app renders
+   the brand face offline. Variable weight axis 200–700. */
+@font-face {
+  font-family: 'Stack Sans Text';
+  font-style: normal;
+  font-weight: 200 700;
+  font-display: swap;
+  src: url('./fonts/stack-sans-text-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Stack Sans Headline';
+  font-style: normal;
+  font-weight: 200 700;
+  font-display: swap;
+  src: url('./fonts/stack-sans-headline-latin.woff2') format('woff2');
+}
+
+/* corta.fr's metric-matched fallback: glyphs outside the latin subset keep
+   Stack Sans' line metrics instead of jumping the baseline. */
+@font-face {
+  font-family: 'Stack Sans Fallback';
+  src: local('Arial'), local('Helvetica'), local('Liberation Sans');
+  size-adjust: 111.17%;
+  ascent-override: 89.95%;
+  descent-override: 26.99%;
+  line-gap-override: 0%;
+}
+
+:root[data-hermes-theme='corta'] {
+  --corta-font-display: 'Stack Sans Headline', 'Stack Sans Text', 'Stack Sans Fallback', system-ui, sans-serif;
+
+  /* Neutral chrome. The green is spent on intent (focus, selection, live
+     state), never mixed into every hairline and hover fill. */
+  --theme-fill-primary-accent-mix: 0%;
+  --theme-fill-secondary-accent-mix: 0%;
+  --theme-fill-tertiary-accent-mix: 0%;
+  --theme-fill-quaternary-accent-mix: 0%;
+  --theme-fill-quinary-accent-mix: 0%;
+  --theme-stroke-primary-accent-mix: 0%;
+  --theme-stroke-secondary-accent-mix: 0%;
+  --theme-stroke-tertiary-accent-mix: 0%;
+  --theme-stroke-quaternary-accent-mix: 0%;
+  --theme-row-hover-accent-mix: 0%;
+  --theme-row-active-accent-mix: 0%;
+  --theme-control-hover-accent-mix: 0%;
+  --theme-control-active-accent-mix: 0%;
+  --ui-warm: var(--theme-midground);
+
+  /* Surfaces: --surface-bar field, --bg rail, --surface for raised content. */
+  --ui-bg-chrome: #fcfcfb;
+  --ui-bg-sidebar: #f7f7f5;
+  --ui-bg-editor: #ffffff;
+  --ui-bg-elevated: #ffffff;
+  --ui-bg-input: #ffffff;
+  --ui-bg-card: rgb(17 17 17 / 0.04);
+  --ui-chat-bubble-background: #efefeb;
+
+  /* Lines: --line-strong, --line, --glass-line, --line-soft. */
+  --ui-stroke-primary: rgb(17 17 17 / 0.16);
+  --ui-stroke-secondary: rgb(17 17 17 / 0.1);
+  --ui-stroke-tertiary: rgb(17 17 17 / 0.08);
+  --ui-stroke-quaternary: rgb(17 17 17 / 0.06);
+
+  --ui-text-tertiary: #6b6b65;
+  --ui-section-label: var(--ui-text-tertiary);
+  --ui-selection-background: rgb(29 74 56 / 0.16);
+  --ui-inline-code-background: rgb(17 17 17 / 0.05);
+  --ui-inline-code-foreground: #2e2e2a;
+
+  /* Site radii: 5/7/10/12px. md (the common control radius) lands on 7px. */
+  --radius-scalar: 0.7;
+  --control-radius: 0.4375rem;
+  --control-icon-radius: 0.375rem;
+
+  --dt-letter-spacing: -0.011em;
+
+  /* Tabs read as document titles, not IDE labels. */
+  --pane-tab-font-size: 0.75rem;
+  --pane-tab-tracking: -0.005em;
+  --pane-tab-case: none;
+
+  /* Reading size for people who read all day, not scan logs: a centred
+     column with a comfortable measure; the composer follows it. */
+  --composer-width: 48rem;
+  --conversation-text-font-size: 0.875rem;
+  --conversation-line-height: 1.375rem;
+  --conversation-tool-font-size: 0.75rem;
+  --paragraph-gap: 0.8rem;
+}
+
+:root.dark[data-hermes-theme='corta'] {
+  --ui-bg-chrome: #161615;
+  --ui-bg-sidebar: #111110;
+  --ui-bg-editor: #1b1b1a;
+  --ui-bg-elevated: #1f1f1d;
+  --ui-bg-input: #1b1b1a;
+  --ui-bg-card: rgb(237 237 234 / 0.04);
+  --ui-chat-bubble-background: #1f1f1d;
+  --ui-widget-surface-background: #1b1b1a;
+
+  --ui-stroke-primary: rgb(237 237 234 / 0.16);
+  --ui-stroke-secondary: rgb(237 237 234 / 0.1);
+  --ui-stroke-tertiary: rgb(237 237 234 / 0.08);
+  --ui-stroke-quaternary: rgb(237 237 234 / 0.06);
+
+  --ui-text-tertiary: #9b9b94;
+  --ui-selection-background: rgb(111 191 152 / 0.28);
+  --ui-inline-code-background: rgb(237 237 234 / 0.07);
+  --ui-inline-code-foreground: #d2d2cd;
+}

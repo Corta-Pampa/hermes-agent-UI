@@ -1,6 +1,7 @@
 import { useStore } from '@nanostores/react'
 import { type ReactElement, useEffect } from 'react'
 
+import { cortaCopy } from '@/brand/copy'
 import { UpdateStatusCard, VersionHero } from '@/components/update-status'
 import { VersionDetails } from '@/components/version-details'
 import { useI18n } from '@/i18n'
@@ -36,7 +37,7 @@ interface AppUpdatesSettingsProps {
 }
 
 function AppUpdatesSettings({ includeUninstall }: AppUpdatesSettingsProps): ReactElement {
-  const { t } = useI18n()
+  const { locale, t } = useI18n()
   const version = useStore($desktopVersion)
   const connection = useStore($connection)
   const remote = connection?.mode === 'remote'
@@ -62,6 +63,7 @@ function AppUpdatesSettings({ includeUninstall }: AppUpdatesSettingsProps): Reac
         </div>
         {version && <VersionDetails version={version} />}
         {includeUninstall && <UninstallSection />}
+        <p className="mt-8 text-center text-xs text-(--ui-text-tertiary)">{cortaCopy(locale).credit}</p>
       </div>
     </SettingsContent>
   )

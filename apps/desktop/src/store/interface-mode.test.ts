@@ -1,8 +1,8 @@
 /**
  * Interface mode is a resolver input, never a preference writer. These tests
  * pin the precedence contract — sessionReveal ?? policy[mode] ?? userPref —
- * and the promise that matters to an existing install: Advanced is a no-op and
- * a round trip through Simple leaves every preference byte-identical.
+ * and the promise that matters to an existing install: the default mode writes
+ * nothing and a round trip through Simple leaves every preference byte-identical.
  */
 
 import { atom } from 'nanostores'
@@ -18,30 +18,34 @@ describe('interface mode persistence', () => {
     vi.resetModules()
   })
 
-  it('never writes a record for Advanced, so an untouched install stays untouched', async () => {
-    const { $interfaceMode, setInterfaceMode } = await loadStore()
+  it('never writes a record for the default mode, so an untouched install stays untouched', async () => {
+    const { $interfaceMode, DEFAULT_INTERFACE_MODE, setInterfaceMode } = await loadStore()
+    const other = DEFAULT_INTERFACE_MODE === 'simple' ? 'advanced' : 'simple'
 
-    expect($interfaceMode.get()).toBe('advanced')
-    setInterfaceMode('advanced')
+    expect($interfaceMode.get()).toBe(DEFAULT_INTERFACE_MODE)
+    setInterfaceMode(DEFAULT_INTERFACE_MODE)
     expect(window.localStorage.getItem(MODE_KEY)).toBeNull()
 
-    setInterfaceMode('simple')
+    setInterfaceMode(other)
     expect(window.localStorage.getItem(MODE_KEY)).not.toBeNull()
 
-    setInterfaceMode('advanced')
+    setInterfaceMode(DEFAULT_INTERFACE_MODE)
     expect(window.localStorage.getItem(MODE_KEY)).toBeNull()
   })
 
-  it('restores Simple across a reload and treats anything else as Advanced', async () => {
-    const first = await loadStore()
+  it('restores either explicit pick across a reload and treats anything else as the default', async () => {
+    for (const mode of ['simple', 'advanced'] as const) {
+      const store = await loadStore()
 
-    first.setInterfaceMode('simple')
-    vi.resetModules()
-    expect((await loadStore()).$interfaceMode.get()).toBe('simple')
+      store.setInterfaceMode(mode)
+      vi.resetModules()
+      expect((await loadStore()).$interfaceMode.get()).toBe(mode)
+    }
 
     window.localStorage.setItem(MODE_KEY, 'intermediate')
     vi.resetModules()
-    expect((await loadStore()).$interfaceMode.get()).toBe('advanced')
+    const reloaded = await loadStore()
+    expect(reloaded.$interfaceMode.get()).toBe(reloaded.DEFAULT_INTERFACE_MODE)
   })
 })
 
@@ -52,7 +56,8 @@ describe('modeBound resolver', () => {
   })
 
   it('falls through to the preference in Advanced, and writes reach the preference', async () => {
-    const { modeBound } = await loadStore()
+    const { modeBound, setInterfaceMode } = await loadStore()
+    setInterfaceMode('advanced')
     const $pref = atom(true)
     const $bound = modeBound('statusbarVisible', $pref, value => $pref.set(value))
 
@@ -163,6 +168,7 @@ describe('tiers', () => {
     expect(items.filter(shownInMode('advanced')).map(item => item.id)).toEqual(['settings', 'hud'])
     expect(items.filter(shownInMode('simple')).map(item => item.id)).toEqual(['settings', 'side'])
 
+    setInterfaceMode('advanced')
     expect($showsAdvancedChrome.get()).toBe(true)
     setInterfaceMode('simple')
     expect($showsAdvancedChrome.get()).toBe(false)

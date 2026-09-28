@@ -20,6 +20,9 @@
 
 import { THEME_PRESET_PALETTES } from '@hermes/shared'
 
+import { BRAND } from '@/brand'
+import { CORTA_COLORS, CORTA_DARK_COLORS, CORTA_FONT_SANS } from '@/brand/corta-theme'
+
 import type { DesktopTheme, DesktopThemeTypography } from './types'
 
 // Color-emoji fonts to append to every stack as a last resort. None of the UI
@@ -43,6 +46,16 @@ const SYSTEM_MONO =
   EMOJI_FALLBACK
 
 export const DEFAULT_TYPOGRAPHY: DesktopThemeTypography = { fontSans: SYSTEM_SANS, fontMono: SYSTEM_MONO }
+
+/** Corta — the product skin. Palette and fonts are owned by src/brand. */
+export const cortaTheme: DesktopTheme = {
+  name: 'corta',
+  label: 'Corta',
+  description: 'Ink on warm off-white, Corta green accent',
+  colors: CORTA_COLORS,
+  darkColors: CORTA_DARK_COLORS,
+  typography: { fontSans: `${CORTA_FONT_SANS}, ${SYSTEM_SANS}`, fontMono: SYSTEM_MONO }
+}
 
 /**
  * Nous — the canonical Hermes desktop identity, forked from the GitHub VS Code
@@ -396,6 +409,7 @@ export const slateTheme: DesktopTheme = {
 }
 
 export const BUILTIN_THEMES: Record<string, DesktopTheme> = {
+  corta: cortaTheme,
   nous: nousTheme,
   github: githubTheme,
   catppuccin: catppuccinTheme,
@@ -412,4 +426,4 @@ export const BUILTIN_THEMES: Record<string, DesktopTheme> = {
 export const BUILTIN_THEME_LIST = Object.values(BUILTIN_THEMES)
 
 /** Skin used when nothing is persisted or the persisted name is retired. */
-export const DEFAULT_SKIN_NAME = 'nous'
+export const DEFAULT_SKIN_NAME: string = BRAND.defaultSkin

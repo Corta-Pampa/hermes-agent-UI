@@ -586,10 +586,13 @@ describe('the defaults a fresh profile lands on', () => {
   const mac = (appearance: 'dark' | 'light') => defaultTranslucencyValues(appearance, false)
   const win = (appearance: 'dark' | 'light') => defaultTranslucencyValues(appearance, true)
 
-  it('ships glass on, not a lever resting at zero', () => {
+  // Corta ships opaque (upstream Hermes ships glass on): the lever rests at
+  // zero, with glass preselected so raising the tint is the only step.
+  it('ships opaque, with glass one tint away', () => {
     for (const values of [mac('light'), mac('dark'), win('light'), win('dark')]) {
-      expect(values.intensity).toBeGreaterThan(0)
-      expect(glassActive({ ...values, mode: 'glass' })).toBe(true)
+      expect(values.intensity).toBe(0)
+      expect(glassActive({ ...values, mode: 'glass' })).toBe(false)
+      expect(glassActive({ ...values, intensity: 29, mode: 'glass' })).toBe(true)
     }
 
     for (const appearance of ['light', 'dark'] as const) {
